@@ -1,0 +1,324 @@
+@charset "UTF-8";
+
+html {
+	font-size: 62.5%;
+}
+
+.container2 {
+	display: flex;
+	/* height:px; */
+	/* border:1px solid black; */
+}
+
+.fonttitle {
+	position: relative;
+	top: 1.875rem;
+	/* border:1px solid black; */
+	font-size: 4.125rem;
+	font-family: Arial, Helvetica, sans-serif;
+	color: chocolate;
+	font-weight: bolder;
+	text-align: center;
+	width: 100%;
+	height: 3.125rem;
+	line-height: 3.125rem;
+	color: chocolate;
+}
+
+.main_left {
+	width: 20%;
+	height: 40rem;
+	float: left;
+	background: #81d181;
+	border: 10px solid #2c7702;
+	border-radius: .5rem;
+	font-size: 1.875rem;
+	/* padding: 20px; */
+	/* margin-top: 20px; */
+	text-align: center;
+	position: fixed;
+	top: 0;
+	left: 1rem;
+}
+
+.backcol {
+	background-color: white;
+	/*background-color:#d4f9cc;*/
+}
+
+.backcol_dson {
+	/*background-color: #cdf8cd;*/
+	background-color: #81d181;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+}
+
+.main_left ul li {
+	list-style: none;
+	cursor: pointer;
+	position: relative;
+	font-family: STXingkai;
+	top: 3.9rem;
+	font-size: 3.05rem;
+	margin-top: 2.575rem;
+	list-style: none;
+	color: white;
+	/*添加过度效果*/
+	transition: all .4s;
+}
+
+.main_left ul li:hover {
+	/*鼠标经过添加放大效果*/
+	transform: scale(1.2);
+}
+
+.main_right {
+	margin-left: 25%;
+	width: 70%;
+	float: right;
+	/* border: 5px solid black; */
+	/* margin-top: 10px; */
+	position: relative;
+	top: 1.25rem;
+	/* margin:0 auto ; 	height: 1000px;*/
+}
+
+.div1 {
+	/* border: 1px solid black; */
+	width: 100%;
+	font-size: 1.25rem;
+	display: flex;
+	margin-top: 5rem;
+	text-align: center;
+}
+
+.div1 div {
+	width: 45%;
+	/* border: 1px solid; */
+}
+
+.arstyle {
+	text-align: center;
+	width: 80%;
+	/* border: 1px solid; */
+	margin-top: 3.125rem;
+	font-weight: bolder;
+	font-size: 1.875rem;
+}
+
+.arstyle textarea {
+	width: 100%;
+	height: 75%;
+	font-size: 1.25rem;
+}
+
+.arstyle button {
+	margin-top: 1.25rem;
+	width: 11.25rem;
+	height: 3.125rem;
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: rgba(44, 126, 21, 0.918);
+	background-color: rgba(255, 243, 136, 0.932);
+	border-radius: .625rem;
+}
+
+.iframeType {
+	width: 100%;
+	height: 68rem;
+	/*border: 5px solid rgb(226, 212, 82);*/
+	border: .625rem solid #2c7702;
+	border-radius: 1.25rem;
+	position: relative;
+	top: 2.5rem;
+}
+
+.patientInfoType {
+	text-align: center;
+	margin-left: 3.125rem;
+	font-size: 1.5625rem;
+	font-weight: bold;
+	/* border: 2px solid black; */
+	border-radius: 1.25rem;
+	width: 80%;
+	margin-top: .625rem;
+	margin-bottom: .625rem;
+}
+
+.div2Type {
+	margin-left: 1.25rem;
+}
+
+.chooseupload_btn {
+	background-color: rgb(255, 173, 22);
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: rgb(242, 249, 255);
+	border-radius: 8px;
+	width: 11.75rem;
+	height: 3.125rem;
+	margin-top: .9375rem;
+	text-align: center;
+}
+
+.uploaded_btn {
+	background-color: rgb(160, 219, 72);
+	font-size: 1.25rem;
+	color: rgb(242, 249, 255);
+	font-weight: bold;
+	border-radius: 8px;
+	width: 11.75rem;
+	height: 3.125rem;
+	margin-top: .9375rem;
+	text-align: center;
+}
+
+.rowmargin1 {
+	margin-top: .625rem;
+	margin-bottom: .625rem;
+	margin-left: .3125rem;
+}
+
+.patient_info_type {
+	color: rgb(204, 99, 95);
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	font-weight: bolder;
+}
+
+h1 {
+	text-align: center;
+	margin-top: .625rem;
+}
+
+.changeInfoInputType {
+	font-size: 1.75rem;
+	border-radius: .3125rem;
+	margin-top: 1.875rem;
+	width: 25rem;
+	text-align: center;
+}
+
+.newpwdMSG {
+	font-size: .425rem;
+	color: red;
+}
+
+.aaaAttr {
+	margin-top: 1.875rem;
+	margin-right: 1.875rem;
+	margin-left: 5rem;
+}
+
+.allposiType {
+	text-align: center;
+	font-size: 1.875rem;
+	width: 100%;
+	/* border: 1px solid black; */
+}
+
+.controlPosiType {
+	margin: 0 auto;
+	border: 8px solid black;
+	width: 70%;
+}
+
+.realcenter {
+	width: 54.7rem;
+	margin: 0 auto;
+}
+
+.changeInfoTextarea {
+	height: 21.25rem;
+	font-size: 1.75rem;
+	border-radius: .3125rem;
+	margin-top: 1.5625rem;
+	width: 35.25rem;
+}
+
+.setScheduleDoctorInfoTypeLeft {
+	width: 55rem;
+	/* border: 1px solid; */
+}
+
+.setScheduleDoctorInfoTypeRight {
+	width: 13.5rem;
+	/* border: 1px solid; */
+}
+
+.doctorAlign {
+	font-size: 2.4375rem;
+	margin-left: .625rem;
+}
+
+.chooseupload_btn {
+	background-color: rgb(255, 173, 22);
+	font-size: 1.25rem;
+	font-weight: bold;
+	color: rgb(242, 249, 255);
+	border-radius: 8px;
+	width: 10.75rem;
+	height: 3.125rem;
+	margin-top: 15px;
+	text-align: center;
+}
+
+.uploaded_btn {
+	background-color: rgb(160, 219, 72);
+	font-size: 1.25rem;
+	font-weight: bold;
+	border-radius: 8px;
+	width: 10.75rem;
+	height: 3.125rem;
+	margin-top: 15px;
+	text-align: center;
+}
+
+.uploadbtn_placetype {
+	height: 6.1875rem;
+	text-align: center;
+	line-height: 6.1875rem;
+}
+
+.big_div {
+	width: 100%;
+}
+
+.table_align {
+	text-align: center;
+	padding-left: 10rem;
+	padding-right: 10rem;
+	padding-top: 1rem;
+}
+
+.logoutBtn_type {
+	cursor: pointer;
+	background: none;
+	border-style: none;
+	text-decoration: underline;
+	font-size: 1.5375rem;
+	color: red;
+}
+
+.active_type {
+	background-color: red;
+}
+
+.operationFontType {
+	font-size: 2.5625rem;
+	font-family: cursive;
+	font-weight: bold;
+	position: relative;
+	top: 3.7rem;
+	color: blue;
+}
+
+.recordTypeImg {
+	width: 4.21rem;
+	height: 3.71rem;
+	position: relative;
+	top: 6.7rem;
+	left: -7.925rem;
+}
