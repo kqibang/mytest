@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.wcxlmgone.dao.PatientDao">
+
+	<!-- 病人登录 -->
+	<select id="patientLogin" parameterType="Patient"
+		resultType="Patient">
+		SELECT
+		*
+		FROM
+		patient
+		WHERE
+		patient_phonenum =
+		#{patient_phonenum}
+		AND patient_password = #{patient_password}
+	</select>
+	<!-- 病人登录，查看是否存在该账户 -->
+	<select id="patientLogin_checkPhonenum" parameterType="Patient"
+		resultType="Integer">
+		SELECT
+		count(*)
+		FROM
+		patient
+		WHERE
+		patient_phonenum =
+		#{patient_phonenum}
+	</select>
+	<!-- 查看身份证是否重复 -->
+	<select id="checkRepeatData" parameterType="Patient"
+		resultType="Integer">
+		select count(*) from patient where patient_identity_id
+		=#{patient_identity_id}
+	</select>
+
+	<!-- 建立病人档案 -->
+	<insert id="addPatient" parameterType="Patient">
+		insert into
+		patient(patient_name,patient_birth,patient_gender,
+		patient_identity_id,patient_phonenum,patient_password)
+		values(#{patient_name},#{patient_birth},#{patient_gender},
+		#{patient_identity_id},#{patient_phonenum},#{patient_password})
+	</insert>
+
+	<!-- //绑定就诊人 -->
+	<select id="BindPatient" resultType="Integer">
+		insert into
+		patient_bind(patient_id,p_id) values(#{patient_id},#{p_id})
+	</select>
+
+	<!-- 查询是否已经绑定 patient_id是被绑定的人信息即现在登录的人的id 其它是像绑定在该账户下的人的信息 -->
+	<select id="checkBindPatientOrnot" parameterType="Patient"
+		resultType="Integer">
+		SELECT
+		count(*)
+		FROM
+		patient_bind
+		WHERE
+		patient_id =
+		#{patient_id}
+		AND p_id = (
+		SELECT
+		patient_id
+		FROM
+		patient
+		WHERE
+		patient_identity_id = #{patient_identity_id})
+		<!-- AND patient_phonenum =
+		#{patient_phonenum}
+		AND patient_name = #{patient_name}) -->
+	</select>
+	<!-- 得到要绑定的用户的id -->
+	<select id="getP_idByIdentiyId" parameterType="String"
+		resultType="Integer">
+		select patient_id from patient where
+		patient_identity_id=#{patient_identity_id}
+	</select>
+	<!-- 返回科室门诊 -->
+	<select id="getDepartmentOutpatient"
+		resultType="DoctorAndAppointInfo">
+		select sub_id,sub_name,sec_id,sec_name from
+		medical_category
+	</select>
+
+	<!-- 返回详细门诊 -->
+	<select id="getMedicalCategoryDetail"
+		parameterType="DoctorAndAppointInfo" resultType="DoctorAndAppointInfo">
+		select
+		sub_id,sub_name,sec_id,sec_name from
+		medical_category where
+		sub_id=#{sub_id}
+	</select>
+
+	<select id="getSubIDAndSubName"
+		resultType="DoctorAndAppointInfo">
+		select DISTINCT
+		sub_id,sub_name from medical_category
+	</select>
+
+	<!-- 返回当天值班医生信息 通过当天日期和选择的科室门诊id -->
+	<select id="getDoctorByDataNameAndTid"
+		parameterType="DoctorAndAppointInfo" resultType="Doctor">
+		select
+		doctor_id,doctor_name,doctor_position_id,doctor.sub_id,doctor.sec_id,position_name,sub_name,sec_name,doctor_award
+		from doctor,position_info,medical_category where doctor.sub_id =
+		#{sub_id} and doctor.sec_id=
+		#{sec_id} and
+		doctor.sub_id=medical_category.sub_id and medical_category.sec_id =
+		doctor.sec_id
+		and doctor.doctor_position_id=position_info.position_id
+		and
+		doctor_id = ANY(SELECT doctor_id from schedule_doctor where date_id
+		=
+		(select date_id from schedule_on_duty where data_name=#{data_name}))
+		<!-- select * from doctor where sub_id = #{sub_id} and sec_id= #{sec_id} 
+			and doctor_id = ANY(SELECT doctor_id from schedule_doctor where date_id = 
+			(select date_id from schedule_on_duty where data_name=#{data_name})) select 
+			doctor.* from doctor,schedule_doctor where sub_id=#{sub_id} and sec_id=#{sec_id} 
+			and doctor.doctor_id=schedule_doctor.doctor_id and schedule_doctor.date_id 
+			=(SELECT date_id from schedule_on_duty where data_name = #{data_name}) -->
+	</select>
+
+	<!-- 返回医生值班详细信息以及可预约时间段 -->
+	<select id="getDocInfoAndSchedule"
+		parameterType="DoctorAndAppointInfo" resultType="DoctorAndAppointInfo">
+		select
+		DISTINCT
+		doctor.doctor_id,doctor_name,doctor_award,doctor.sub_id,
+		sub_name,doctor.sec_id,sec_name,position_name,medical_expenses,rest,
+		startwork_time,endwork_time,date_id,sche_doc_id
+		from
+		schedule_doctor,position_info,doctor,medical_category where
+		(doctor.doctor_id=#{doctor_id} and
+		doctor.doctor_id=schedule_doctor.doctor_id and
+		doctor.sub_id=medical_category.sub_id
+		and
+		doctor.sec_id=medical_category.sec_id and
+		position_info.position_id=(select doctor.doctor_position_id from
+		doctor where doctor.doctor_id = #{doctor_id}) and
+		schedule_doctor.date_id=(
+		select date_id from schedule_on_duty where
+		data_name=#{data_name}) and DATE(NOW())=#{data_name} and
+		HOUR(endwork_time)>=HOUR(now())) and
+		MINUTE(endwork_time)>MINUTE(NOW())
+		or
+		(doctor.doctor_id=#{doctor_id} and
+		doctor.doctor_id=schedule_doctor.doctor_id and
+		doctor.sub_id=medical_category.sub_id
+		and
+		doctor.sec_id=medical_category.sec_id and
+		position_info.position_id=(select doctor.doctor_position_id from
+		doctor where doctor.doctor_id = #{doctor_id}) and
+		schedule_doctor.date_id=(
+		select date_id from schedule_on_duty where
+		data_name=#{data_name}) and DATE(NOW())!= #{data_name})
+		<!-- doctor.doctor_id=#{doctor_id} and doctor.doctor_id=schedule_doctor.doctor_id 
+			and doctor.sub_id=medical_category.sub_id and doctor.sec_id=medical_category.sec_id 
+			and position_info.position_id=(select doctor.doctor_position_id from doctor 
+			where doctor.doctor_id = #{doctor_id}) and schedule_doctor.date_id=( select 
+			date_id from schedule_on_duty where data_name=#{data_name}) and HOUR(endwork_time)>HOUR(now()) -->
+	</select>
+
+	<!-- 确定预约该医生 -->
+	<insert id="addAppointRegister"
+		parameterType="AppointmentResult_Schedule">
+		insert into
+		appointment_result(doctor_id,patient_id,date_id,sche_doc_id,appoint_or_not)
+		values(#{doctor_id},#{patient_id},#{date_id},#{sche_doc_id},1)
+	</insert>
+	<!-- 预约挂号之前检查是否已有记录 -->
+	<select id="checkAppointedOrNot"
+		parameterType="AppointmentResult_Schedule" resultType="Integer">
+		SELECT count(*)
+		from appointment_result where
+		doctor_id=#{doctor_id} and
+		patient_id=#{patient_id} and sche_doc_id=#{sche_doc_id} and
+		appoint_or_not=1
+	</select>
+	<!-- 取消预约该医生 -->
+	<update id="cancelAppointment"
+		parameterType="AppointmentResult_Schedule">
+		update appointment_result set appoint_or_not=0 where
+		appointment_id
+		=#{appointment_id};
+		UPDATE schedule_doctor set
+		rest=rest+1 where sche_doc_id = (SELECT
+		sche_doc_id from
+		appointment_result where
+		appointment_id=#{appointment_id});
+	</update>
+	<!-- 得到所有挂号记录 -->
+	<select id="getAllAppointmentResult"
+		resultType="AppointmentResult_Schedule" parameterType="Patient">
+		SELECT
+		DISTINCT
+		appointment_id,appointment_result.patient_id,patient_name,appointment_result.doctor_id,doctor_name,appoint_result,
+		schedule_on_duty.date_id,data_name,startwork_time,endwork_time,schedule_doctor.sche_doc_id,appoint_or_not
+		FROM
+		patient,doctor,schedule_on_duty,schedule_doctor,appointment_result,patient_bind
+		WHERE
+		appointment_result.doctor_id=doctor.doctor_id
+		and
+		appointment_result.patient_id=patient.patient_id and
+		appointment_result.date_id=
+		schedule_on_duty.date_id and
+		appointment_result.date_id=schedule_doctor.date_id
+		and
+		appointment_result.sche_doc_id=schedule_doctor.sche_doc_id and
+		appointment_result.patient_id=patient_bind.p_id
+		and
+		patient_bind.p_id=ANY(SELECT p_id from patient_bind where
+		patient_id=#{patient_id}) ORDER BY data_name desc
+		<!-- SELECT schedule_doctor.sche_doc_id,appointment_id,appointment_result.patient_id,patient_name,appointment_result.doctor_id,doctor_name,appoint_result, 
+			schedule_on_duty.date_id,data_name,startwork_time,endwork_time FROM patient,doctor,schedule_on_duty,schedule_doctor,appointment_result,patient_bind 
+			WHERE appointment_result.doctor_id=doctor.doctor_id and appointment_result.patient_id=patient.patient_id 
+			and appointment_result.date_id= schedule_on_duty.date_id and appointment_result.date_id=schedule_doctor.date_id 
+			and appointment_result.sche_doc_id=schedule_doctor.sche_doc_id and appointment_result.patient_id=patient_bind.p_id 
+			and patient_bind.p_id=ANY(SELECT p_id from patient_bind where patient_id=#{patient_id}) -->
+	</select>
+
+	<!-- 查看诊疗结果 -->
+	<select id="getAppointmentResult"
+		parameterType="AppointmentResult_Schedule"
+		resultType="AppointmentResult_Schedule">
+		SELECT appointment_result.*,patient_name,doctor_name,
+		year(NOW())-YEAR(patient_birth) as
+		patient_age,data_name,sub_name,sec_name,patient_gender
+		from appointment_result,doctor,patient,schedule_on_duty,medical_category
+		where appointment_id=#{appointment_id} and
+		appointment_result.patient_id=patient.patient_id and
+		appointment_result.doctor_id=doctor.doctor_id and
+		appointment_result.date_id=schedule_on_duty.date_id and
+		medical_category.sub_id=(SELECT sub_id from doctor where
+		doctor_id=(SELECT doctor_id
+		from appointment_result where appointment_id=#{appointment_id})) and
+		medical_category.sec_id=(SELECT sec_id from doctor where
+		doctor_id=(SELECT doctor_id
+		from appointment_result where appointment_id=#{appointment_id}))
+	</select>
+	<!-- 查看所有已添加的就诊人 -->
+	<select id="getAllPatients" resultType="Patient"
+		parameterType="Patient">
+		select distinct * from patient where patient_id =
+		ANY(select p_id
+		from patient_bind where patient_id=#{patient_id})
+	</select>
+	<!-- 删除所有已添加的就诊人 -->
+	<select id="deleteOnePatient" 
+		parameterType="PatientBind">
+		delete from patient_bind where patient_id=#{patient_id}
+		and p_id=#{p_id}
+	</select>
+</mapper>

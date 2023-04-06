@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.wcxlmgone.dao.DoctorAndAdminDao">
+
+
+	<!-- 1 医生登录 ok -->
+	<select id="checkDocIdAndPassword" parameterType="Doctor"
+		resultType="Doctor">
+		select doctor.*,sub_name,sec_name,position_name
+		from
+		doctor,medical_category,position_info
+		where doctor_id=#{doctor_id} and
+		doctor.sub_id=medical_category.sub_id
+		and
+		doctor.sec_id=medical_category.sec_id and
+		doctor.doctor_position_id=position_info.position_id
+		<!-- and doctor_password=#{doctor_password} -->
+	</select>
+
+	<!-- 2 管理员登录 ok -->
+	<select id="checkAdminIdAndPassword"
+		parameterType="Administrator" resultType="Administrator">
+		select * from administrator where a_id=#{a_id}
+		<!-- and a_password=#{a_password} -->
+	</select>
+
+	<!-- 4 医生查看排班表ok -->
+	<select id="doctorGetSchedule" parameterType="Doctor"
+		resultType="DoctorAndAppointInfo">
+		SELECT
+		schedule_doctor.*,
+		schedule_on_duty.data_name
+		FROM
+		schedule_doctor,
+		schedule_on_duty
+		WHERE
+		schedule_doctor.doctor_id=#{doctor_id} and
+		MONTH (NOW())= MONTH (
+		data_name )
+		AND schedule_doctor.date_id = schedule_on_duty.date_id
+		OR
+		MONTH (NOW())+1= MONTH ( data_name ) ;
+	</select>
+
+	<!-- 3 医生上传诊疗结果 ok -->
+	<update id="uploadMedicalRecords"
+		parameterType="AppointmentResult_Schedule">
+		UPDATE appointment_result SET
+		appoint_result=#{appoint_result} WHERE
+		appointment_id=#{appointment_id}
+	</update>
+
+	<!-- 5 医生获得预约自己的所有病人ok -->
+	<select id="getAllAppointedPatient" parameterType="Doctor"
+		resultType="AppointmentResult_Schedule">
+		SELECT
+		appointment_result.appointment_id,
+		YEAR(NOW())-YEAR(patient.patient_birth) as patient_age,
+		appointment_result.patient_id,
+		patient.patient_name,
+		patient_gender,
+		appointment_result.date_id,
+		data_name,
+		appoint_result,
+		appointment_result.sche_doc_id,
+		appointment_time,
+		startwork_time,
+		endwork_time
+		from
+		patient,appointment_result,schedule_doctor,schedule_on_duty
+		where
+		appointment_result.doctor_id=#{doctor_id} and
+		appointment_result.sche_doc_id=schedule_doctor.sche_doc_id
+		and
+		appointment_result.date_id=schedule_on_duty.date_id and
+		appointment_result.patient_id=patient.patient_id
+	</select>
+
+	<!--得到当前病人的诊疗详细信息 -->
+
+	<!-- 6 管理员注册医生账号 ok -->
+	<insert id="addDoctor" parameterType="Doctor">
+		insert into
+		doctor(doctor_name,doctor_address,doctor_award,doctor_identity_id,sub_id,sec_id,doctor_password,doctor_position_id)
+		values(#{doctor_name},#{doctor_address},#{doctor_award},#{doctor_identity_id},#{sub_id},#{sec_id},#{doctor_password},#{doctor_position_id})
+	</insert>
+	<!-- 6-1 注册时检查身份证是否已存在 -->
+	<select id="checkDoctorByIdentityId" parameterType="Doctor"
+		resultType="Doctor">
+		select * from doctor where
+		doctor_identity_id=#{doctor_identity_id}
+	</select>
+	<!-- 7 管理员删除医生账号 -->
+	<delete id="doctorCancel" parameterType="Doctor">
+		delete from doctor where
+		doctor_id=#{doctor_id}
+	</delete>
+
+	<!-- 8 管理员安排排班 -->
+	<insert id="setSchedule"
+		parameterType="AppointmentResult_Schedule">
+		insert into
+		schedule_doctor(date_id,doctor_id,rest,startwork_time,endwork_time)
+		values(#{date_id},#{doctor_id},5,#{startwork_time},#{endwork_time})
+	</insert>
+	<!-- 8-1 插入排班之前，查询排班是否重复 -->
+	<select id="checkScheduleRepeateOrNot"
+		parameterType="AppointmentResult_Schedule" resultType="Integer">
+		SELECT
+		count(*)
+		FROM
+		schedule_doctor
+		WHERE
+		doctor_id =  #{doctor_id}
+		AND date_id =#{date_id}
+		AND
+		(HOUR(endwork_time)>HOUR(#{startwork_time})
+		or(HOUR(endwork_time)=HOUR(#{startwork_time}) and
+		MINUTE(endwork_time)>MINUTE(#{startwork_time})));
+	</select>
+	<!-- 9 管理員修改医生信息 -->
+	<update id="adminModifydoctorInfo" parameterType="Doctor">
+		update doctor
+		set
+		doctor_address=#{doctor_address},doctor_position_id=#{doctor_position_id},
+		doctor_award=#{doctor_award},doctor_password=#{doctor_password},doctor_name=#{doctor_name},
+		doctor_identity_id=#{doctor_identity_id},sub_id=#{sub_id},sec_id=#{sec_id}
+		where doctor_id=#{doctor_id}
+	</update>
+	<!-- 10 管理员注册医生账户时自动获取职位信息 -->
+	<select id="getPositionInfo" resultType="DoctorAndAppointInfo">
+		select position_id as
+		doctor_position_id,position_name from position_info;
+	</select>
+
+	<!-- // 11 通过sub_id sec_id查询医生信息 -->
+	<select id="selectDoctorBySubAndSec" resultType="Doctor"
+		parameterType="DoctorAndAppointInfo">
+		SELECT
+		doctor.*,
+		position_name,
+		sub_name,
+		sec_name
+		FROM
+		doctor,
+		position_info,
+		medical_category
+		WHERE
+		doctor.sub_id = #{sub_id}
+		AND doctor.sub_id = medical_category.sub_id
+		AND doctor.sec_id =
+		medical_category.sec_id
+		AND doctor.sec_id = #{sec_id} and
+		doctor.doctor_position_id=position_info.position_id
+	</select>
+	<!-- 12 医生修改个人信息 ok -->
+	<update id="doctorChangeInfo" parameterType="Doctor">
+		update doctor set
+		doctor_name=#{doctor_name},
+		doctor_award=#{doctor_award},
+		doctor_password=#{doctor_password} ,
+		doctor_address=#{doctor_address}
+		where doctor_id=#{doctor_id}
+	</update>
+	<!-- 13 将所有医生返回 -->
+	<select id="getAllDoctors" resultType="Doctor">
+		select doctor.*,
+		position_name,
+		sub_name,
+		sec_name
+		from
+		doctor,
+		position_info,
+		medical_category
+		where doctor.sub_id = medical_category.sub_id
+		AND
+		doctor.sec_id = medical_category.sec_id
+		and
+		doctor.doctor_position_id=position_info.position_id
+	</select>
+	<!-- 14 通过名字查询医生 -->
+	<select id="getDoctorsByDocName" resultType="Doctor"
+		parameterType="Doctor">
+		SELECT
+		doctor.*,
+		position_name,
+		sub_name,
+		sec_name
+		FROM
+		doctor,
+		position_info,
+		medical_category
+		WHERE
+		doctor.sub_id =
+		medical_category.sub_id
+		AND doctor.sec_id = medical_category.sec_id
+		AND
+		doctor.doctor_position_id=position_info.position_id
+		and
+		doctor.doctor_name like CONCAT('%',#{doctor_name},'%')
+	</select>
+	<!-- 15 通过科室id查询医生 -->
+	<select id="selectDoctorBySub" resultType="Doctor"
+		parameterType="DoctorAndAppointInfo">
+		SELECT
+		doctor.*,
+		position_name,
+		sub_name,
+		sec_name
+		FROM
+		doctor,
+		position_info,
+		medical_category
+		WHERE
+		doctor.sub_id = #{sub_id}
+		AND doctor.sub_id = medical_category.sub_id
+		AND doctor.sec_id =
+		medical_category.sec_id
+		AND
+		doctor.doctor_position_id=position_info.position_id
+	</select>
+	<!-- 安排值班时，获得今日及今日之后的日期 -->
+	<select id="getDateFromNowOn"
+		resultType="AppointmentResult_Schedule">
+		select * from schedule_on_duty where
+		YEAR(data_name)>=YEAR(NOW()) and
+		MONTH(data_name)>=MONTH(NOW()) and
+		DAY(data_name)>=DAY(NOW()) order by data_name asc
+	</select>
+
+</mapper> 
