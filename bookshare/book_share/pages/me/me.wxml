@@ -1,0 +1,30 @@
+<!--pages/me/me.wxml-->
+<view class="head">
+    <image src="/images/touxiang/head.jpg" class="img"/>
+    <view class="loginAndInsert" wx:if="{{u_name === '?'}}">
+        <view bindtap="gotoLogin">登陆/</view>
+        <view bindtap="gotoInsert">注册</view>
+    </view>
+    <view class="nameAndScore" wx:else>
+        <view>帐号：{{u_name}}</view>
+        <view>积分：{{u_score}}</view>
+</view>
+</view>
+<view class="others">
+    <view bindtap="gotoDonate" class="othersView" wx:if="{{u_name != '?'}}">
+        <text>捐赠</text>
+        <image src="/images/otherimg/next.png"/>
+    </view>
+    <view bindtap="gotoReturn" class="othersView" wx:if="{{u_name != '?'}}">
+        <text>归还</text>
+        <image src="/images/otherimg/next.png"/>
+    </view>
+    <view bindtap="gotoCheck" class="othersView" wx:if="{{u_class === 1}}">
+        <text>审核</text>
+        <image src="/images/otherimg/next.png"/>
+    </view>
+    <view bindtap="logout" class="othersView" wx:if="{{u_name != '?'}}">
+        <text>退出</text>
+        <image src="/images/otherimg/next.png"/>
+    </view>
+</view>

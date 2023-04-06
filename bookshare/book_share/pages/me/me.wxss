@@ -1,0 +1,83 @@
+/* pages/me/me.wxss */
+
+.container1{
+    display: flex;
+    margin-bottom: 20rpx;
+    margin-top: 10rpx;
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+}
+
+.container1 text{
+    font-size: 36rpx;
+}
+.image2{
+    text-align: center;
+    width: 100%;
+}
+
+.loginAndInsert{
+    display: flex;
+    margin-left: 50rpx;
+    margin-top: 30rpx;
+    margin-bottom: 30rpx;
+}
+
+.img{
+    height: 200rpx;
+    width: 200rpx;
+    border-radius: 100rpx;
+}
+
+.head{
+    display: flex;
+    margin-left: 30rpx;
+    margin-top: 30rpx;
+    margin-right: 30rpx;
+    border: 1rpx solid black;
+    border-radius: 10rpx;
+}
+
+.nameAndScore{
+    margin-left: 50rpx;
+    margin-top: 50rpx;
+    margin-bottom: 30rpx;
+}
+
+.others{
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+    vertical-align: center;
+    margin-top: 30rpx;
+}
+
+.others text{
+    font-size: 72rpx;
+    color: darkslategrey;
+    margin-left: 30rpx;
+}
+
+
+.divLine{
+    background: #252424;
+    width: 100%;
+    height: 5rpx;
+    margin-top: 5rpx;
+    margin-bottom: 10rpx;
+}  
+
+.othersView{
+    border: 1rpx solid black;
+    border-radius: 10rpx;
+    margin-bottom: 30rpx;
+    position: relative;
+}
+
+.othersView image{
+    width: 50rpx;
+    height: 50rpx;
+    position: absolute;
+    right: 0;
+    margin-top: 20rpx;
+
+}

@@ -1,0 +1,30 @@
+<!--pages/bookdonate/bookdonate.wxml-->
+<view class="container1">
+    <text>书名：</text>
+    <input bindinput="inputBname" placeholder="书名请带书名号"></input>
+</view>
+<view class="container1">
+    <text>作者：</text>
+    <input bindinput="inputBauthor" placeholder="请输入作者名称"></input>
+</view>
+<view class="container1">
+    <text>简介：</text>
+    <input bindinput="inputBprofile" placeholder="请输入简介"></input>
+</view>
+<view class="container1">
+    <text>积分：</text>
+    <input bindinput="inputBscore" placeholder="请输入0~7之间的数字"></input>
+</view>
+<view class="container1">
+    <text>类别：</text>
+    <input bindinput="inputBclass" placeholder="该书的类别"></input>
+</view>
+<view class="container1">
+    <text>捐赠人：</text>
+    <input bindinput="inputUname" placeholder="请输入捐赠人的帐号"></input>
+</view>
+<view class="container1">
+    <text>图片：</text>
+    <button bindtap="uploadingimg">点击上传图片</button>
+</view>
+<button bindtap="ConfirmDonate" type="primary">确认捐赠</button>

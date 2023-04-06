@@ -1,0 +1,20 @@
+<!--pages/index/index.wxml-->
+<view class="container2">
+    <text>欢  迎  来  到\n</text>
+    <text>小区图书共享小程序</text>
+</view>
+<view class="msg">
+    <text>{{msg}}</text>
+</view>
+<view class="container1">
+    <text>帐号：</text>
+    <input value="{{u_name}}" bindinput="inputUname"></input>
+</view>
+<view class="container1">
+    <text>密码：</text>
+    <input bindinput="inputUpass" password="true"></input>
+</view>
+<view class="btn">
+    <button bindtap="login" type="primary">登陆</button>
+    <button bindtap="insert" type="primary">注册</button>
+</view>

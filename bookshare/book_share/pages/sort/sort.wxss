@@ -1,0 +1,57 @@
+/* pages/sort/sort.wxss */
+
+.sousuo{
+    display: flex;
+}
+.sousuo input{
+  width: 80%;
+  background-color: aliceblue;
+  height: 80rpx;
+  border: 1rpx solid black;
+  margin-right: 20rpx;
+  margin-top: 20rpx;
+  margin-left: 10rpx;
+}
+.sousuo button{
+  width: 20%;
+  border: 1rpx solid black;
+  margin-top: 20rpx;
+  background-color: azure;
+}
+
+.sort1{
+    margin-top: 30rpx;
+    display: flex;
+}
+
+.sort2{
+    margin-top: 30rpx;
+    display: flex;
+    margin-bottom: 30rpx;
+}
+
+.container1{
+    display: flex;
+    border: 1rpx solid black;
+}
+
+.img1 image{
+    width: 170rpx;
+    height: 260rpx;
+}
+
+.text{
+    height: 130rpx;
+    width: 580rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container2{
+    display: flex;
+    width: 100%;
+}
+
+.view1{
+    margin-right: 100rpx;
+}

@@ -1,0 +1,45 @@
+/* pages/insert/insert.wxss */
+/* pages/bookdonate/bookdonate.wxss */
+.container1{
+    display: flex;
+    border: 1rpx solid black;
+    margin-top: 10rpx;
+    margin-bottom: 20rpx;
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+    border-radius: 20rpx;
+    height: 70rpx;
+}
+.container1 text{
+    font-size: 36rpx;
+    margin-left: 10rpx;
+    margin-top: 10rpx;
+}
+
+.container1 input{
+    font-size: 36rpx;
+    margin-left: 10rpx;
+    margin-top: 10rpx;
+}
+
+.container2{
+    width: 100%;
+    text-align: center;
+    margin-top: 200rpx;
+    margin-bottom: 20rpx;
+}
+
+.container2 text{
+    font-size: 48rpx;
+    color: rgb(53, 59, 59);
+}
+
+.msg{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20rpx;
+}
+
+.msg text{
+    color: red;
+}

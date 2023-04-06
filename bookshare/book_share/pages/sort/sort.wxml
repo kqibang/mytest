@@ -1,0 +1,33 @@
+<!--pages/sort/sort.wxml-->
+<!-- 搜索区域 -->
+<view class="sousuo">
+    <input value="{{b_name}}" bindinput="inputBname" placeholder="请输入书名"></input>
+  <button bindtap="findBookByBname">搜索</button>
+</view>
+<!-- 类别区域 -->
+<view class="sort1">
+    <button type="primary" bindtap="findBookByXS">小说</button>
+    <button type="primary" bindtap="findBookByTH">童话</button>
+</view>
+<view class="sort1">
+    <button type="primary" bindtap="findBookByMZ">名著</button>
+    <button type="primary" bindtap="findBookByKX">科学</button>
+</view>
+<view class="sort2">
+    <button type="primary" bindtap="findBookByZZ">杂志</button>
+    <button type="primary" bindtap="findBookByMH">漫画</button>
+</view>
+<view wx:for="{{books}}" wx:key="id" class="container1" bindtap="gotoBookMessage" data-bid="{{item.b_id}}">
+    <view class="img1">
+        <image src="{{item.b_image}}"/>
+    </view>
+    <view>
+        <view>书名：{{item.b_name}}</view>
+        <view>作者：{{item.b_author}}</view>
+        <view class="text">简介：{{item.b_profile}}</view>
+        <view class="container2">
+            <view class="view1">积分数：{{item.b_score}}</view>
+            <view>剩余本数：{{item.b_number}}</view>
+        </view>
+    </view>
+</view>

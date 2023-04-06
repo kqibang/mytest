@@ -1,0 +1,21 @@
+<!--pages/insert/insert.wxml-->
+<view class="container2">
+    <text>欢  迎  注  册\n</text>
+    <text>小区图书共享小程序</text>
+</view>
+<view class="msg">
+    <text>{{msg}}</text>
+</view>
+<view class="container1">
+    <text decode="{{true}}">帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</text>
+    <input value="{{u_name}}" bindinput="inputUname"></input>
+</view>
+<view class="container1">
+    <text decode="{{true}}">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</text>
+    <input bindinput="inputUpass" password="true"></input>
+</view>
+<view class="container1">
+    <text>确认密码：</text>
+    <input bindinput="inputUrpass" password="true"></input>
+</view>
+<button bindtap="insertUser" type="primary">注册</button>

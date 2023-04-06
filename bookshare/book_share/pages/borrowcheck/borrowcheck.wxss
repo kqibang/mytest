@@ -1,0 +1,38 @@
+/* pages/borrowcheck/borrowcheck.wxss */
+.btn{
+    margin-left: 10rpx;
+    margin-right: 10rpx;
+    display: flex;
+    margin-bottom: 30rpx;
+}
+
+.container1{
+    display: flex;
+    border: 1rpx solid black;
+    border-radius: 20rpx;
+    margin-bottom: 10rpx;
+    margin-left: 10rpx;
+    margin-right: 10rpx;
+}
+
+.img1 image{
+    width: 170rpx;
+    height: 260rpx;
+}
+
+.text{
+    height: 130rpx;
+    width: 550rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+}
+
+.container2{
+    display: flex;
+    width: 100%;
+}
+
+.view1{
+    margin-right: 100rpx;
+}
